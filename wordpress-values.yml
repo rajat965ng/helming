@@ -1,0 +1,41 @@
+## User of the application
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressUsername: helm-user
+
+## Application password
+## Defaults to a random 10-character alphanumeric string if not set
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressPassword: my-pass
+
+## Use existing secret (does not create the WordPress Secret object)
+## Must contain key `wordpress-secret`
+## NOTE: When it's set, the `wordpressPassword` parameter is ignored
+##
+# existingSecret:
+
+## Admin email
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressEmail: helm.userexample.com
+
+## First name
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressFirstName: Helm_is
+
+## Last name
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressLastName: Fun
+
+## Blog name
+## ref: https://github.com/bitnami/bitnami-docker-wordpress#environment-variables
+##
+wordpressBlogName: Helm is Fun !!!
+
+service:
+  type: NodePort
+
+replicaCount: 2
