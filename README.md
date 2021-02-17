@@ -363,4 +363,16 @@ data:
   - ```helm package [CHART_NAME] [...] [flags]```
   
 ## Building Your First Helm Chart
-- 
+- Scaffolding the initial file structure
+  - **Chart.yaml**: Used to define chart metadata
+  - **values.yaml**: Used to define default chart values
+  - **templates/**: Used to define chart templates and Kubernetes resources to be created
+  - ```helm create guestbook```
+  - ```cd guestbook```
+  - ```edit helm/guestbook/Chart.yaml with redis dependencies```
+  - ```helm dependency update```
+  - ```helm show values charts/redis-12.7.4.tgz```
+  - ```edit redis values at the bottom of values.yaml like 'redis:'```
+  - ```edit changes for frontend : image, tag, service.type```
+  - ```cd ..``` && ```kubectl create ns chap5```
+  - ```helm install my-guestbook guestbook -n chap5```
