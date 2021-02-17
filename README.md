@@ -332,3 +332,35 @@ data:
 
 ## Library charts
 - Helm charts have a **type** field defined in the **Chart.yaml** file that is set to either **application** or **library**.
+- **Application charts**: deploy full applications to Kubernetes
+- **Library charts**: This type of chart is not used to deploy applications but instead to provide named templates that may be used across multiple different charts.
+
+### Templating CRs
+- **CRs** are used to create resources that are not native to the Kubernetes API.
+- The **templates/** directory can then contain an instance of the **MyCustomResource** resource.
+- **Chart.yaml** file, also known as the chart definition, is a resource that declares different metadata about a Helm chart.
+- A chart definition must contain the following fields that contain crucial chart metadata:
+![](.README/397c660a.png)
+
+- **Dependencies** are declared in the Chart.yaml file by populating the dependencies field. The following is the relevant snippet from the wordpress chart's definition:
+![](.README/4d96ddcc.png)
+
+### Downloading dependencies
+- Download dependencies for the first time, you can run the helm dependency update command, which downloads each dependency into the charts/ directory of the given Helm chart:
+  - ```helm dependency update $CHART_PATH```
+  - The helm dependency update command downloads dependencies from repositories in the form of GZip archives with the .tgz file extension.
+  - This command also generates a file called Chart.lock. The Chart.lock file is similar to the Chart.yaml file. 
+  - However, while the Chart.yaml file contains the desired state of the chart dependencies, the Chart.lock file defines the actual state of the dependencies that were applied.
+- With the Chart.lock file in place, Helm is able to redownload the exact dependencies that were originally downloaded in the event that the charts/ directory is removed or needs to be rebuilt.
+  - ```helm dependency build $CHART_PATH```
+  - Because you can download dependencies using the helm dependency build command, it is possible to omit the charts/ directory from source control to reduce the size of repositories.
+- The helm dependency list command can be used to view the downloaded dependencies of a Helm chart saved to your local machine:
+  - ```helm dependency list $CHART_NAME```
+  - The STATUS column determines whether the dependency has been successfully downloaded to the charts/ directory. It has been downloaded if the status reads ok. If the status reads as missing, the dependency has not been downloaded yet.
+  
+### Packaging a Helm chart
+- Charts are packaged in tgz archives. While this archives can be manually created by using the tar bash utility or an archive manager, Helm provides the **helm package** command to simplify this task.  
+  - ```helm package [CHART_NAME] [...] [flags]```
+  
+## Building Your First Helm Chart
+- 
