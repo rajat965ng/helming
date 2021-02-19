@@ -376,3 +376,45 @@ data:
   - ```edit changes for frontend : image, tag, service.type```
   - ```cd ..``` && ```kubectl create ns chap5```
   - ```helm install my-guestbook guestbook -n chap5```
+  
+## Publishing the Guestbook chart to a chart repository
+- Creating a chart repository
+  - Chart repositories are servers containing two different components, as follows:
+    - Helm charts, packaged as tgz archives
+    - An **index.yaml** file, containing metadata about the charts contained in the repository
+  - Helm community's **ChartMuseum** tool dynamically generate the index.yaml file when new charts are pushed to the repository.
+  - follow these steps to create your chart repository:
+    - Create a Git Repository and initialize it with README.md
+    - Click the **Settings** tab within your repository to access your repository settings.
+    - Locate the **GitHub Pages** section of the **Settings** page (and **Options** tab). It appears toward the bottom of the page.
+    - Under **Source**, select the option in the drop-down list called **master** branch. This will allow GitHub to create a static site that serves the contents of your master branch.
+    - If you have successfully configured GitHub Pages, you will receive a message at the top of the screen that says **GitHub Pages source saved**. You will also be able to see the URL to your static site.
+
+## Publishing the Guestbook Helm chart
+- Modify the version field in your chart's Chart.yaml file to 1.0.0, as follows:
+  ```version: 1.0.0```
+- Run this command from one level above your local guestbook directory, as follows:
+  - ```helm package guestbook```
+  - ```cp guestbook-1.0.0.tgz $GITHUB_CHART_REPO_CLONE```
+  - use the helm repo index command to generate the **index.yaml** file for your Helm repository. The contents of this file provide the guestbook chart metadata.
+    - ```helm repo index $GITHUB_CHART_REPO_CLONE```
+    
+## Adding your chart repository
+- Once you know your chart repository's URL, you can add this repository locally with the helm repo add command, as follows:
+  - ```helm repo add learnhelm $GITHUB_PAGES_URL```
+- You can verify that your chart was published by searching for the guestbook chart against your locally configured repos.
+  - ```helm search repo guestbook```
+  
+  
+## Testing Helm Charts
+- Helm is to create Kubernetes resources, you should ensure that your resource templates are generated properly before they are applied to a Kubernetes cluster.
+
+### Validating template generation locally with helm template
+- The first way to validate your chart's templating is to use the helm template command, which can be used to render a chart template locally and display its fully rendered contents in the standard output.
+  - ```helm template my-guestbook Learn-Helm/helm-charts/charts/ guestbook```
+  - ```helm template my-chart $CHART_DIRECTORY --set replicas=2```
+  
+### Linting Helm charts and templates
+- ```helm lint PATH [flags]```
+- ```helm template my-guestbook Learn-Helm/helm-charts/charts/ guestbook | yamllint -```
+
